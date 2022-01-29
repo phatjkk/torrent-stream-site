@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Torrent Stream Site - ReactJS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A site using torrent to stream movie directly on your browser. 
+
+## Live Demo
+
+![image](https://user-images.githubusercontent.com/48487157/150942319-73b58cd9-a27c-4d64-b464-4562c77196a8.png)
+
+Demo site: https://phatjkk.github.io/movie/
 
 ## Available Scripts
 
