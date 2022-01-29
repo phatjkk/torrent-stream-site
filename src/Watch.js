@@ -1,13 +1,13 @@
 import MOVIES_DATA from "./movies_data";
-import { useEffect } from "react";
-
+import { useEffect,useState } from "react";
+import Sv1 from "./Sv1"
+import Sv2 from "./Sv2"
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
-const fetch = require('sync-fetch')
-
-
+const fetch = require("sync-fetch");
 function Watch(params) {
+  const [serverUse,ChangeServer] = useState(1)
   let json_data = localStorage.getItem("movieData");
   let isChoose = false;
   let movieObject;
@@ -21,77 +21,45 @@ function Watch(params) {
     });
     movieObject = movieObject[0];
   }
-  useEffect(() => {
-    // fetch(
-    //   "https://tdgvnbqyeablbicdulwh.supabase.co/rest/v1/movies?select=subtitles%2Cenglish_subtitles&id=eq.1714",
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       apikey:
-    //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMDMzNDg4OSwiZXhwIjoxOTQ1OTEwODg5fQ.tucD7--82BeiaZBBu4erF53BJEBfRYcr-WSlvC9mv5o",
-    //       "accept-language": "vi,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
-    //     },
-    //   }
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("Success:", data[0].english_subtitles);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
-    // const metadata = fetch("https://tdgvnbqyeablbicdulwh.supabase.co/rest/v1/movies?select=subtitles%2Cenglish_subtitles&id=eq.1714",
-    // {
-    //   method: "GET",
-    //   headers: {
-    //     apikey:
-    //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMDMzNDg4OSwiZXhwIjoxOTQ1OTEwODg5fQ.tucD7--82BeiaZBBu4erF53BJEBfRYcr-WSlvC9mv5o",
-    //     "accept-language": "vi,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
-    //   },
-    // }
-    // ).json()[0].english_subtitles;
-    // console.log(metadata)
-    window.webtor = window.webtor || [];
-    window.webtor.push({
-      id: "player",
-      magnet: "magnet:?xt=urn:btih:" + movieObject.hash,
-      on: function (e) {
-        if (e.name == window.webtor.TORRENT_FETCHED) {
-          console.log("Torrent fetched!", e.data);
-        }
-        if (e.name == window.webtor.TORRENT_ERROR) {
-          console.log("Torrent error!");
-        }
-      },
-      poster:
-        "https://www.themoviedb.org/t/p/original" + movieObject.backdrop_path,
-      // subtitles: [
-      //   {
-      //     srclang: "en",
-      //     label: "English",
-      //     src: metadata,
-      //     default: false,
-      //   },
-      // ],
-      imdbId: movieObject.imdb_id,
-      width: "100%",
-      lang: "en",
-      i18n: {
-        en: {
-          common: {
-            "prepare to play": "Preparing Video Stream... Please Wait...",
-          },
-          stat: {
-            seeding: "Seeding",
-            waiting: "Client initialization",
-            "waiting for peers": "Waiting for peers",
-            from: "from",
-          },
+  function getSub() {
+    const sub_data = fetch(
+      "https://tdgvnbqyeablbicdulwh.supabase.co/rest/v1/movies?select=subtitles%2Cenglish_subtitles&id=eq." +
+        movieObject.id,
+      {
+        method: "GET",
+        headers: {
+          apikey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMDMzNDg4OSwiZXhwIjoxOTQ1OTEwODg5fQ.tucD7--82BeiaZBBu4erF53BJEBfRYcr-WSlvC9mv5o",
+          "accept-language": "vi,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
         },
+      }
+    ).json()[0];
+    // console.log(metadata)
+    let en_sub_url = URL.createObjectURL(
+      new Blob([sub_data.english_subtitles], {
+        type: "text/vtt;charset=utf8",
+      })
+    );
+    let vi_sub_url = URL.createObjectURL(
+      new Blob([sub_data.subtitles], { type: "text/vtt;charset=utf8" })
+    ); //;charset=utf8
+
+    console.log("{" + en_sub_url + "}");
+    return [
+      {
+        srclang: "en",
+        label: "English",
+        src: "https://brenopolanski.github.io/html5-video-webvtt-example/MIB2-subtitles-pt-BR.vtt",
+        default: true,
       },
-    });
-    console.log("hello");
-  }, []);
+      {
+        srclang: "vi",
+        label: "Tiếng Việt",
+        src: vi_sub_url,
+        default: false,
+      },
+    ];
+  }
 
   return (
     <div>
@@ -110,8 +78,19 @@ function Watch(params) {
             {movieObject.title}
             <p className="text-sm font-thin">{movieObject.english_title}</p>
           </h3>
-          <div id="player" className="webtor w-full"></div>
-          <h4 className="text-white">Để xem phụ đề Tiếng Việt hãy nhấn nút subtitle ở góc phải rồi chọn tab OpenSubtitles để chọn ngôn ngữ nhé!</h4>
+          {serverUse===1? <Sv1 movieObject={movieObject} />:<Sv2 movieObject={movieObject} />}
+
+          {/* <TorrentPlayer hash={movieObject.hash} /> */}
+          <button onClick={()=>ChangeServer(1)} className="mr-3 mt-3 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+  Server 1
+</button>
+<button  onClick={()=>ChangeServer(2)} className="bg-blue-500 mt-3 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+Server 2
+</button>
+          <h4 className="text-white">
+            Để xem phụ đề Tiếng Việt hãy nhấn nút subtitle ở góc phải rồi chọn
+            tab OpenSubtitles để chọn ngôn ngữ nhé!
+          </h4>
           {/* <video
             controls
             src={movieObject[0].hash}

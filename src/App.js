@@ -7,7 +7,7 @@ function App() {
 
   return (
     <HashRouter>
-    <div className="lg:p-10  bg-black bg-cover">
+    <div className="lg:p-10  bg-gradient-to-r from-purple-900 to-blue-900 bg-cover">
     
     <Routes>
       <Route path="/" element={<Home />} />
