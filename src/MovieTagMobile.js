@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { memo } from "react";
 import { isMobile } from "react-device-detect";
 import StarRatingComponent from 'react-star-rating-component';
-function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
+import MovieTypes from "./MovieTypes"
+function MovieTagMobile({ id, name, enName, year, imbd, time, img,object }) {
   const handleChooseMovie = (id) => {
     localStorage.setItem(
       "movieData",
@@ -23,7 +24,7 @@ function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
         <img
           name="image"
           onClick={() => handleChooseMovie(id)}
-          className={"group-hover:brightness-50 rounded-lg w-full h-3/4 drop-shadow-lg "}
+          className={"group-hover:brightness-50 border-2 border-transparent group-hover:border-blue-600 rounded-lg w-full h-3/4 drop-shadow-lg "}
           // style={{ height: "20%" }}
           src={
             isMobile
@@ -31,7 +32,11 @@ function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
               : "https://www.themoviedb.org/t/p/w500" + img
           }
         />
-        
+        {/* <p className="text-white">
+          {
+            object.genre_ids.map((e)=><>{MovieTypes.find(x => x.key === e).name} </>)
+          }
+        </p> */}
       <div
         className="
         invisible
@@ -69,7 +74,7 @@ font-semibold
           />}
           starCount={5}
           value={imbd*5/10}
-        /><p className="font-semibold">{imbd}/10</p>
+        /><p className="font-semibold">IMDb: {imbd}/10</p>
     
       </div>
         </div>
