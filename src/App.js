@@ -1,5 +1,6 @@
 import Home from "./Home";
 import Watch from "./Watch";
+import './App.css';
 import {HashRouter,Route,Routes,Link} from "react-router-dom";
 
 
@@ -7,7 +8,7 @@ function App() {
 
   return (
     <HashRouter>
-    <div className="lg:p-10  bg-gradient-to-r from-purple-900 to-blue-900 bg-cover">
+    <div className="lg:p-10  bg-zinc-900 bg-cover">
     
     <Routes>
       <Route path="/" element={<Home />} />

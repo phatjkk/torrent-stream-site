@@ -3,6 +3,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { memo } from "react";
 import { isMobile } from "react-device-detect";
+import StarRatingComponent from 'react-star-rating-component';
 function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
   const handleChooseMovie = (id) => {
     localStorage.setItem(
@@ -15,13 +16,14 @@ function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
   return (
     <div
       name="info"
-      className="m-2 pb-2 w-auto rounded-xl bg-white bg-opacity-30 bg-clip-padding backdrop-blur drop-shadow-lg "
+      className=" m-2 pb-2 w-auto rounded-lg bg-opacity-30 bg-clip-padding backdrop-blur drop-shadow-lg "
     >
       <Link to="/Watch">
+      <div className="group">
         <img
           name="image"
           onClick={() => handleChooseMovie(id)}
-          className={"rounded-t-xl w-full h-3/4"}
+          className={"group-hover:brightness-50 rounded-lg w-full h-3/4 drop-shadow-lg "}
           // style={{ height: "20%" }}
           src={
             isMobile
@@ -29,6 +31,48 @@ function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
               : "https://www.themoviedb.org/t/p/w500" + img
           }
         />
+        
+      <div
+        className="
+        invisible
+        group-hover:visible
+        absolute 
+        p-1
+        right-3
+        top-3
+        text-white
+font-semibold
+        "
+      >
+       
+          {time}
+      </div>
+      <div
+        className="
+        invisible
+        group-hover:visible
+        absolute
+        rounded-full
+        p-1
+        left-3
+        top-2
+        text-white
+        "
+      >
+ 
+        <StarRatingComponent 
+          name="IMBDrate" 
+          editing={false}
+          renderStarIcon={() => <FontAwesomeIcon
+            className="mr-1 shadow-lg text-xs"
+            icon={faStar}
+          />}
+          starCount={5}
+          value={imbd*5/10}
+        /><p className="font-semibold">{imbd}/10</p>
+    
+      </div>
+        </div>
       </Link>
 
       <h4 className="pt-2 pl-2 text-yellow-50 font-semibold font-sans text-l">
@@ -37,60 +81,6 @@ function MovieTagMobile({ id, name, enName, year, imbd, time, img }) {
       <p className="pl-2 text-gray-200 text-sm">
         {enName} ({year})
       </p>
-      <div
-        className="
-        absolute bg-slate-500
-        rounded-full
-        p-1
-        shadow-lg
-        right-3
-        bg-opacity-50
-        top-3
-        mb-2
-        "
-      >
-        <h4
-          className="
-         text-white
-         text-sm
-         ml-2
-         mr-2
-         font-sans
-         font-normal
-        "
-        >
-          {time}
-        </h4>
-      </div>
-      <div
-        className="
-        absolute bg-white
-        rounded-full
-        p-1
-        left-3
-        top-3
-        bg-opacity-30
-        mb-2
-        "
-      >
-        <h4
-          className="
-         text-white
-         text-sm
-         ml-2
-         mr-2
-         font-sans
-         font-normal
-        "
-          style={{ textShadow: "1px 1px #000000" }}
-        >
-          <FontAwesomeIcon
-            className="text-yellow-400 mr-1 shadow-lg"
-            icon={faStar}
-          />
-          IMDb {imbd}
-        </h4>
-      </div>
     </div>
   );
 }

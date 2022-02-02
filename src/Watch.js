@@ -7,19 +7,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 const fetch = require("sync-fetch");
 function Watch(params) {
+
   const [serverUse,ChangeServer] = useState(1)
   let json_data = localStorage.getItem("movieData");
   let isChoose = false;
-  let movieObject;
+  let isAdvance = false
+  let movieObject={};
 
   if (json_data !== null && json_data !== undefined) {
     isChoose = true;
+    let storageData = JSON.parse(json_data);
+    if(storageData.AdSearch===1){
+      isAdvance=true;
+      movieObject.title = storageData.title;
+      movieObject.english_title = "";
+      movieObject.hash = storageData.hash
+      movieObject.imdb_id = null;
+      movieObject.backdrop_path = ""
+    }
+    else{
     movieObject = MOVIES_DATA.filter(function (obj) {
       return obj.id === JSON.parse(json_data).idMovie;
     }).map(function (obj) {
       return obj;
     });
     movieObject = movieObject[0];
+  }
   }
   function getSub() {
     const sub_data = fetch(

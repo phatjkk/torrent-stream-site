@@ -5,7 +5,7 @@ function Sv2({movieObject}){
         window.webtor = window.webtor || [];
         window.webtor.push({
           id: "player",
-          magnet: "magnet:?xt=urn:btih:" + movieObject.hash,
+          magnet: movieObject.hash,
           on: function (e) {
             if (e.name == window.webtor.TORRENT_FETCHED) {
               console.log("Torrent fetched!", e.data);
