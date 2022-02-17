@@ -6,6 +6,8 @@ A site using torrent to stream movie directly on your browser.
 
 ![image](https://user-images.githubusercontent.com/48487157/152199597-bf1913aa-20fe-4c15-969b-12b6638243ef.png)
 
+![image](https://user-images.githubusercontent.com/48487157/154512779-23745bbc-3b43-44e6-84dc-29df45f8e9c6.png)
+
 ![image](https://user-images.githubusercontent.com/48487157/150942319-73b58cd9-a27c-4d64-b464-4562c77196a8.png)
 
 Demo site: https://phatjkk.github.io/movie/
